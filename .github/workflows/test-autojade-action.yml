@@ -9,9 +9,10 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-    - name: Run Playwright Tests with Autojade
+    
+    - name: Run Playwright Tests with Autojade (Custom Folder)
       uses: dotjade/autojade-action@main
       with:
         api_key: ${{ secrets.AUTOJADE_API_KEY }}
-        test_files: "tests"
+        test_files: "sample_tests\custom_tests"
         options: "--headless"
