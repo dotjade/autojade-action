@@ -27998,38 +27998,62 @@ const fs = __importStar(__nccwpck_require__(7147));
 const path = __importStar(__nccwpck_require__(1017));
 (() => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        // Log when action starts
+        core.info('Starting the Autojade GitHub Action...');
+        // Get inputs from the action.yml file
         const apiKey = core.getInput('api_key');
         const testFilesPath = core.getInput('test_files') || 'tests'; // Default to 'tests' folder
         const options = core.getInput('options') || '';
+        // Log input parameters
+        core.info(`API Key: ${apiKey}`);
+        core.info(`Test Files Path: ${testFilesPath}`);
+        core.info(`Options: ${options}`);
         // Check if the test directory exists
         if (!fs.existsSync(testFilesPath)) {
+            core.error(`Test directory '${testFilesPath}' does not exist.`);
             core.setFailed(`The specified test directory '${testFilesPath}' does not exist.`);
             return;
         }
+        else {
+            core.info(`Test directory '${testFilesPath}' found.`);
+        }
         // Read test files from the directory
         const testFiles = fs.readdirSync(testFilesPath).map((file) => {
+            core.info(`Processing file: ${file}`);
             return {
                 name: file,
-                content: fs.readFileSync(path.join(testFilesPath, file), 'utf8')
+                content: fs.readFileSync(path.join(testFilesPath, file), 'utf8'),
             };
         });
-        // Upload test files to Autojade
-        const uploadResponse = yield axios_1.default.post('https://34.136.164.16/api/upload', {
+        core.info(`Total test files found: ${testFiles.length}`);
+        // Upload test files to Autojade server
+        core.info('Uploading test files to Autojade...');
+        const uploadResponse = yield axios_1.default.post('http://34.136.164.16/api/upload', {
             apiKey: apiKey,
             files: testFiles,
-            options: options
+            options: options,
         });
         const executionId = uploadResponse.data.executionId;
+        core.info(`Upload successful. Received execution ID: ${executionId}`);
         // Poll the execution result
+        core.info(`Polling the execution result for ID: ${executionId}...`);
         let result;
         do {
-            result = yield axios_1.default.get(`https://34.136.164.16/api/status/${executionId}`);
+            core.debug('Waiting for the test results...');
+            result = yield axios_1.default.get(`http://34.136.164.16/api/status/${executionId}`);
+            yield new Promise(resolve => setTimeout(resolve, 5000)); // Delay for polling
         } while (result.data.status === 'pending');
-        // Output the result
+        // Log the final result
+        core.info(`Execution complete. Status: ${result.data.status}`);
+        core.info(`Result: ${result.data.result}`);
+        // Set the output result for the action
         core.setOutput('result', result.data);
     }
     catch (error) {
-        core.setFailed(`Error: ${error.message}`);
+        const errorMessage = error.message;
+        core.error(`Error occurred: ${errorMessage}`);
+        core.debug(error.stack || '');
+        core.setFailed(`Action failed with error: ${errorMessage}`);
     }
 }))();
 
