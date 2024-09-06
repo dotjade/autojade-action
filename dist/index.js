@@ -52,7 +52,7 @@ const path = __importStar(require("path"));
             };
         });
         // Upload test files to Autojade
-        const uploadResponse = yield axios_1.default.post('https://your-autojade-service.com/api/upload', {
+        const uploadResponse = yield axios_1.default.post('https://34.136.164.16/api/upload', {
             apiKey: apiKey,
             files: testFiles,
             options: options
@@ -61,7 +61,7 @@ const path = __importStar(require("path"));
         // Poll the execution result
         let result;
         do {
-            result = yield axios_1.default.get(`https://your-autojade-service.com/api/status/${executionId}`);
+            result = yield axios_1.default.get(`https://34.136.164.16/api/status/${executionId}`);
         } while (result.data.status === 'pending');
         // Output the result
         core.setOutput('result', result.data);
