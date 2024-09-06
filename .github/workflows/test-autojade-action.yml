@@ -15,4 +15,4 @@ jobs:
       with:
         api_key: "user-api-key"
         test_files: "sample_tests/custom_tests"
-        options: "--headless=false --browser=firefox" 
+        options: "--headless=false --browser=firefox"
