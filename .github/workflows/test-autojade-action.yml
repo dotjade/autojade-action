@@ -14,5 +14,5 @@ jobs:
       uses: dotjade/autojade-action@main
       with:
         api_key: ${{ secrets.AUTOJADE_API_KEY }}
-        test_files: "sample_tests\custom_tests"
+        test_files: "sample_tests/custom_tests"
         options: "--headless"
