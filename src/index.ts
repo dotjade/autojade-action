@@ -29,7 +29,7 @@ interface TestFile {
     });
 
     // Upload test files to Autojade
-    const uploadResponse = await axios.post('https://34.136.164.16/api/upload', {
+    const uploadResponse = await axios.post('http://34.136.164.16/api/upload', {
       apiKey: apiKey,
       files: testFiles,
       options: options
@@ -40,7 +40,7 @@ interface TestFile {
     // Poll the execution result
     let result;
     do {
-      result = await axios.get(`https://34.136.164.16/api/status/${executionId}`);
+      result = await axios.get(`http://34.136.164.16/api/status/${executionId}`);
     } while (result.data.status === 'pending');
 
     // Output the result
