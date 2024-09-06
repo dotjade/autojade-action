@@ -16,7 +16,17 @@ interface TestFile {
     // Get inputs from the action.yml file
     const apiKey: string = core.getInput('api_key');
     const testFilesPath: string = core.getInput('test_files') || 'tests'; // Default to 'tests' folder
-    const options: string = core.getInput('options') || '';
+
+    const optionsInput = core.getInput('options') || '';  // Ensure options are set
+    const options = {
+      headless: optionsInput.includes('--headless') ? true : false,  // Default to headless if not provided
+      browser: optionsInput.includes('--browser') ? optionsInput.split('--browser=')[1] : 'chromium',  // Default to 'chromium'
+    };
+    
+    // Log the parsed options for clarity
+    core.info(`Parsed options: headless = ${options.headless}, browser = ${options.browser}`);
+    
+
 
     // Log input parameters
     core.info(`API Key: ${apiKey}`);

@@ -28003,7 +28003,13 @@ const path = __importStar(__nccwpck_require__(1017));
         // Get inputs from the action.yml file
         const apiKey = core.getInput('api_key');
         const testFilesPath = core.getInput('test_files') || 'tests'; // Default to 'tests' folder
-        const options = core.getInput('options') || '';
+        const optionsInput = core.getInput('options') || ''; // Ensure options are set
+        const options = {
+            headless: optionsInput.includes('--headless') ? true : false,
+            browser: optionsInput.includes('--browser') ? optionsInput.split('--browser=')[1] : 'chromium', // Default to 'chromium'
+        };
+        // Log the parsed options for clarity
+        core.info(`Parsed options: headless = ${options.headless}, browser = ${options.browser}`);
         // Log input parameters
         core.info(`API Key: ${apiKey}`);
         core.info(`Test Files Path: ${testFilesPath}`);
