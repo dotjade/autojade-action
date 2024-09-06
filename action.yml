@@ -5,11 +5,12 @@ inputs:
     description: "API Key to authenticate with Autojade."
     required: true
   test_files:
-    description: "Test files or directories to upload."
-    required: true
+    description: "Test files or directory to upload (default: tests)."
+    default: "tests"  # Default to the 'tests' folder
+    required: false
   options:
     description: "Optional execution options."
     required: false
 runs:
-  using: "node20"
+  using: "node20"  # Specify Node.js 20 here
   main: "dist/index.js"
