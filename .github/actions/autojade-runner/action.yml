@@ -1,0 +1,15 @@
+name: "Autojade Test Runner"
+description: "Run Playwright tests using Autojade's managed test service"
+inputs:
+  api_key:
+    description: "API Key to authenticate with Autojade."
+    required: true
+  test_files:
+    description: "Test files or directories to upload."
+    required: true
+  options:
+    description: "Optional execution options."
+    required: false
+runs:
+  using: "node20"
+  main: "dist/index.js"

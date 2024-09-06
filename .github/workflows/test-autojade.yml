@@ -1,0 +1,14 @@
+name: Test Autojade Action
+on: [push]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Run Playwright Tests with Autojade
+      uses: your-username/autojade-action@main
+      with:
+        api_key: ${{ secrets.AUTOJADE_API_KEY }}
+        test_files: "tests"
+        options: "--headless"
