@@ -13,6 +13,6 @@ jobs:
     - name: Run Playwright Tests with Autojade (Custom Folder)
       uses: dotjade/autojade-action@main
       with:
-        api_key: ${{ secrets.AUTOJADE_API_KEY }}
+        api_key: "user-api-key"
         test_files: "sample_tests/custom_tests"
         options: "--headless"
