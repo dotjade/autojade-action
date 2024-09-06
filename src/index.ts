@@ -11,8 +11,14 @@ interface TestFile {
 (async () => {
   try {
     const apiKey: string = core.getInput('api_key');
-    const testFilesPath: string = core.getInput('test_files');
+    const testFilesPath: string = core.getInput('test_files') || 'tests'; // Default to 'tests' folder
     const options: string = core.getInput('options') || '';
+
+    // Check if the test directory exists
+    if (!fs.existsSync(testFilesPath)) {
+      core.setFailed(`The specified test directory '${testFilesPath}' does not exist.`);
+      return;
+    }
 
     // Read test files from the directory
     const testFiles: TestFile[] = fs.readdirSync(testFilesPath).map((file) => {
@@ -39,7 +45,9 @@ interface TestFile {
 
     // Output the result
     core.setOutput('result', result.data);
-} catch (error) {
+  } catch (error) {
     core.setFailed(`Error: ${(error as Error).message}`);
-}
+  }
 })();
+
+

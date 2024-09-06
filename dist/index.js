@@ -27999,8 +27999,13 @@ const path = __importStar(__nccwpck_require__(1017));
 (() => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const apiKey = core.getInput('api_key');
-        const testFilesPath = core.getInput('test_files');
+        const testFilesPath = core.getInput('test_files') || 'tests'; // Default to 'tests' folder
         const options = core.getInput('options') || '';
+        // Check if the test directory exists
+        if (!fs.existsSync(testFilesPath)) {
+            core.setFailed(`The specified test directory '${testFilesPath}' does not exist.`);
+            return;
+        }
         // Read test files from the directory
         const testFiles = fs.readdirSync(testFilesPath).map((file) => {
             return {
